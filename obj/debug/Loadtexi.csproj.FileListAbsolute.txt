@@ -1,0 +1,11 @@
+C:\Users\Palm\Desktop\Ohana3DS-Rebirth-master\Loadtexi\bin\Debug\Loadtexi.exe.config
+C:\Users\Palm\Desktop\Ohana3DS-Rebirth-master\Loadtexi\bin\Debug\Loadtexi.exe
+C:\Users\Palm\Desktop\Ohana3DS-Rebirth-master\Loadtexi\bin\Debug\Loadtexi.pdb
+C:\Users\Palm\Desktop\Ohana3DS-Rebirth-master\Loadtexi\bin\Debug\Ohana3DS Rebirth.exe
+C:\Users\Palm\Desktop\Ohana3DS-Rebirth-master\Loadtexi\bin\Debug\Microsoft.DirectX.Direct3DX.dll
+C:\Users\Palm\Desktop\Ohana3DS-Rebirth-master\Loadtexi\bin\Debug\Microsoft.DirectX.Direct3D.dll
+C:\Users\Palm\Desktop\Ohana3DS-Rebirth-master\Loadtexi\bin\Debug\Microsoft.DirectX.dll
+C:\Users\Palm\Desktop\Ohana3DS-Rebirth-master\Loadtexi\bin\Debug\Ohana3DS Rebirth.pdb
+C:\Users\Palm\Desktop\Ohana3DS-Rebirth-master\Loadtexi\obj\Debug\Loadtexi.csprojResolveAssemblyReference.cache
+C:\Users\Palm\Desktop\Ohana3DS-Rebirth-master\Loadtexi\obj\Debug\Loadtexi.exe
+C:\Users\Palm\Desktop\Ohana3DS-Rebirth-master\Loadtexi\obj\Debug\Loadtexi.pdb
