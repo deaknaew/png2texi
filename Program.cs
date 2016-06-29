@@ -36,9 +36,9 @@ namespace Loadtexi
                                 if (a != null)
                                 {
                                     var enc = GetEncoderInfo("image/png");
-                                    EncoderParameters parameters = new EncoderParameters(2);
-                                    parameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
-                                    parameters.Param[1] = new EncoderParameter(System.Drawing.Imaging.Encoder.Compression, (long)EncoderValue.CompressionNone);
+                                    EncoderParameters parameters = new EncoderParameters(1);
+                                    
+                                    parameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Compression, (long)EncoderValue.CompressionNone);
 
                                     a.texture.Save(Path.GetFullPath(Argument).Replace(".texi", filetype), enc, parameters);
                                     if (a.miptexture != null)
@@ -114,18 +114,23 @@ namespace Loadtexi
                     if (mipmap > 1)
                     {
                         int lenght = 0;
-                        var texture = TextureCodec.decode(buffer, width, height, fmt, out lenght);
-                        List<Bitmap> miptexture = new List<Bitmap>();
+                        var texture = (fmt == RenderBase.OTextureFormat.etc1 || fmt == RenderBase.OTextureFormat.etc1a4?
+                            TextureCodec.decode(buffer, width, height, fmt, out lenght) :
+                            TextureCodec.getIMG(buffer, width, height, fmt, out lenght));
+                        List<Bitmap> miptextures = new List<Bitmap>();
                         int lenghtall = lenght;
                         for (var i = 1; i < mipmap; i++)
                         {
                             var mip = new byte[lenghtall];
                             Buffer.BlockCopy(buffer, lenghtall, mip, 0, buffer.Length - lenghtall);
-                            miptexture.Add(TextureCodec.decode(mip, width / Convert.ToInt32(Math.Pow(2, i)), height / Convert.ToInt32(Math.Pow(2, i)), fmt, out lenght));
+                            var miptexture = (fmt == RenderBase.OTextureFormat.etc1 || fmt == RenderBase.OTextureFormat.etc1a4 ?
+                            TextureCodec.decode(mip, width / Convert.ToInt32(Math.Pow(2, i)), height / Convert.ToInt32(Math.Pow(2, i)), fmt, out lenght) :
+                            TextureCodec.getIMG(mip, width / Convert.ToInt32(Math.Pow(2, i)), height / Convert.ToInt32(Math.Pow(2, i)), fmt, out lenght));
+                            miptextures.Add(miptexture);
                             lenghtall += lenght;
                         }
 
-                        return new RenderBase.OTexture(texture, miptexture, name);
+                        return new RenderBase.OTexture(texture, miptextures, name);
                     }
                     else {
                         int dataOffset;
@@ -171,7 +176,7 @@ namespace Loadtexi
                     }
 
                     Stream imageStreamSource = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    TiffBitmapDecoder decoder = new TiffBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+                    PngBitmapDecoder decoder = new PngBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
                     int frame = 0; // adjust/ loop for multiframe tiffs
                     BitmapSource bitmapSource = decoder.Frames[0];
 
@@ -181,7 +186,7 @@ namespace Loadtexi
                     bitmapSource.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
                     img.UnlockBits(data);
                     
-                    IEnumerable<byte> main = TextureCodec.encode(img, fmt);
+                    IEnumerable<byte> main = TextureCodec.getPixelData(img, fmt);
 
                     if (mipmap > 1)
                     {
@@ -192,7 +197,7 @@ namespace Loadtexi
                             if (File.Exists(mimefile))
                             {
                                 Bitmap mip = new Bitmap(mimefile);
-                                main = main.Concat(TextureCodec.encode(mip, fmt));
+                                main = main.Concat(TextureCodec.getPixelData(mip, fmt));
                                 mip.Dispose();
                             }
                             else
