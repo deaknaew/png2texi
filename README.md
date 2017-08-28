@@ -4,6 +4,7 @@ TEXI Converter (to/from PNG) for 3DS game [「NEWラブプラス+」/「NEWLOVEP
 
 
 Loadtexi.exe: Drag & Drop to convert TEXI to PNG and back to TEXI.
+
 Some image compresion formats are not yet supported.
 
 
